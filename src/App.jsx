@@ -1,12 +1,28 @@
 import './App.css'
 import {useState} from 'react'
+import {evaluate} from 'mathjs'
 
 function App() {
   const [value, setValue] = useState('0')
+
+  const handleTotal = () => {
+    try {
+      const total = evaluate(value)
+      setValue(total)
+    } catch(err) {
+      setValue("Error!")
+      console.log(err)
+    }
+  }
   
   const handleClick = (e) => {
     const val = e.target.value
-    setValue(value === '0' ? val : value + val)
+    if (val === "=") {
+      handleTotal()
+      return
+    } 
+
+    setValue((value === '0' || value === 'Error!') ? val : value + val)
   }
 
   const clear = () => {
